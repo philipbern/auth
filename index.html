@@ -79,21 +79,17 @@
 
     console.log('ID Token:', idToken);
 
-    // Example: sending ID token to your backend
-    /*
-    $.ajax({
-      url: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + idToken
-      },
-      contentType: 'application/json',
-      data: JSON.stringify({ action: 'login' }),
-      success: function(response) {
-        console.log('Backend says:', response);
-      }
-    });
-    */
+$.ajax({
+    url: 'https://script.google.com/macros/s/AKfycbyro1pmlj6ouBHc97wcL31DUHAyWLOeIXOnZmvHMdd24TXWMi9jkw4kAbhYugX2_so/exec', // your deployed GAS URL
+    type: 'POST',
+    success: function(response) {
+      console.log('Response:', response);
+    },
+    error: function(xhr, status, error) {
+      console.error('Error:', error);
+    }
+  });
+
   }
 
   function signOut() {
