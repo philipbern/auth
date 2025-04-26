@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Auth O Demo with jQuery</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background: #f0f2f5;
+    }
+    #loginDiv {
+      margin-top: 30px;
+    }
+    #userInfo {
+      margin-top: 20px;
+      display: none;
+    }
+    #userInfo img {
+      border-radius: 50%;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Login with Google</h1>
+
+<div id="loginDiv"></div>
+
+<div id="userInfo">
+  <p id="userName"></p>
+  <img id="userPic" src="" width="100" height="100" alt="Profile Picture">
+  <p><button id="signOutBtn">Sign Out</button></p>
+</div>
+
+<script>
+  let idToken = '';
+
+  $(document).ready(function() {
+    google.accounts.id.initialize({
+      client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+      callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById('loginDiv'),
+      { theme: 'outline', size: 'large' }
+    );
+
+    $('#signOutBtn').click(function() {
+      signOut();
+    });
+  });
+
+  function handleCredentialResponse(response) {
+    idToken = response.credential;
+
+    // Decode the JWT to get user info
+    const payload = JSON.parse(atob(idToken.split('.')[1]));
+
+    $('#userName').text('Hello, ' + payload.name);
+    $('#userPic').attr('src', payload.picture);
+    $('#userInfo').show();
+    $('#loginDiv').hide();
+
+    console.log('ID Token:', idToken);
+
+    // Example: sending ID token to your backend
+    /*
+    $.ajax({
+      url: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + idToken
+      },
+      contentType: 'application/json',
+      data: JSON.stringify({ action: 'login' }),
+      success: function(response) {
+        console.log('Backend says:', response);
+      }
+    });
+    */
+  }
+
+  function signOut() {
+    google.accounts.id.disableAutoSelect();
+    $('#userInfo').hide();
+    $('#loginDiv').show();
+    idToken = '';
+  }
+</script>
+
+</body>
+</html>
