@@ -37,7 +37,7 @@
   </style>
 </head>
 <body>
-
+<button type="button" onclick="login()">Login</button>
 <h1>Login with Google</h1>
 
 <div id="loginDiv"></div>
@@ -51,7 +51,7 @@
 <script>
   let idToken = '';
 
-  $(document).ready(function() {
+  function login () {
     google.accounts.id.initialize({
       client_id: 'luxeauth-457300.apps.googleusercontent.com',
       callback: handleCredentialResponse
@@ -64,7 +64,7 @@
     $('#signOutBtn').click(function() {
       signOut();
     });
-  });
+  }
 
   function handleCredentialResponse(response) {
     idToken = response.credential;
