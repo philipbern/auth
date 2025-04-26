@@ -79,17 +79,35 @@
 
     console.log('ID Token:', idToken);
 
-$.ajax({
-    url: 'https://script.google.com/macros/s/AKfycbyro1pmlj6ouBHc97wcL31DUHAyWLOeIXOnZmvHMdd24TXWMi9jkw4kAbhYugX2_so/exec', // your deployed GAS URL
-    type: 'POST',
-    success: function(response) {
-      console.log('Response:', response);
+// $.ajax({
+//     url: 'https://script.google.com/macros/s/AKfycbyro1pmlj6ouBHc97wcL31DUHAyWLOeIXOnZmvHMdd24TXWMi9jkw4kAbhYugX2_so/exec', // your deployed GAS URL
+//     type: 'POST',
+//     success: function(response) {
+//       console.log('Response:', response);
+//     },
+//     error: function(xhr, status, error) {
+//       console.error('Error:', error);
+//     }
+//   });
+
+  const id_token = idToken;
+
+  $.ajax({
+    url: "https://script.google.com/macros/s/AKfycbyro1pmlj6ouBHc97wcL31DUHAyWLOeIXOnZmvHMdd24TXWMi9jkw4kAbhYugX2_so/exec",
+    method: "POST",
+    data: {
+      id_token: id_token
+    },
+    success: function(data) {
+      console.log("Server response:", data);
     },
     error: function(xhr, status, error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     }
   });
 
+
+    
   }
 
   function signOut() {
